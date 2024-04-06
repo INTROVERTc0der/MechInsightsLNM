@@ -8,9 +8,10 @@ const app=express();
 app.use(express.json());
 app.use(cookieParser());
 
-
-
-
+import studentRoutes from './routes/student.routes.js'
+import facultyRoutes from './routes/faculty.routes.js'
+import formRoutes from './routes/form.routes.js'
+import miscRoutes from './routes/misc.routes.js'
 
 //routes
 app.use('/api/v1/student_user',studentRoutes);
