@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+//import crypto from 'crypto';
 
-const UserStudentSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   rollNo: {
     type: String,
     required: [true, 'Roll Number is required'],
@@ -27,12 +30,12 @@ const UserStudentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  InstituteEmail: {
+  instituteEmail: {
     type: String,
     required: true,
     unique: true,
     lowercase:true,
-    match:[],//matches email agaist regex
+    //match:[],//matches email agaist regex
   },
   personalEmail: {
     type: String,
@@ -44,6 +47,11 @@ const UserStudentSchema = new mongoose.Schema({
         'Please fill in a valid email address',
       ],
   },
+  form_links: [
+    {
+      type: String
+    }
+  ],
   branch: {
     type: String,
     required: true,
@@ -97,5 +105,5 @@ userSchema.methods = {
   // },
 };
 
-const Student=mongoose.model('User_Student', UserStudentSchema);
+const Student=mongoose.model('User_Student', userSchema);
 export default Student;

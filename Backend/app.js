@@ -1,6 +1,6 @@
 import  express  from "express";
 import { config } from "dotenv";
-import { Cors } from "cors";
+//import { Cors } from "cors";
 import cookieParser from "cookie-parser";
 config();
 const app=express();
@@ -14,6 +14,10 @@ import formRoutes from './routes/form.routes.js'
 import miscRoutes from './routes/misc.routes.js'
 
 //routes
+app.get('/',(req,res)=>{
+    res.status(404).json({message: "hello from server"});
+})
+
 app.use('/api/v1/student_user',studentRoutes);
 app.use('/api/v1/faculty_user',facultyRoutes);
 app.use('/api/v1/forms',formRoutes);
@@ -21,7 +25,7 @@ app.use('/api/v1',miscRoutes);
 
 
 //default catch all route -404
-app.app('*',(req,res)=>{
+app.use('*',(req,res)=>{
     res.status(404).send('OOPS!! 404 Page Not Found');
 });
 

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const FormSchema = new mongoose.Schema({
-  id: {
+  formId: {
     type: String,
     required: true,
     unique: true,

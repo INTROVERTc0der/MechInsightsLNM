@@ -1,7 +1,9 @@
 
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-const UserFacultySchema = new mongoose.Schema({
+const userFacultySchema = new mongoose.Schema({
   facultyId: {
     type: String,
     required: true,
@@ -20,16 +22,16 @@ const UserFacultySchema = new mongoose.Schema({
   },
   post: {
     type: String,
-    enum:[],
+    enum: ["assistant professor","professor"],
     default:'',
     required: true,
   },
-  InstituteEmail: {
+  instituteEmail: {
     type: String,
     required: true,
-    unique: true,
+    //unique: true,
     lowercase:true,
-    match:[],//matches email agaist regex
+   // match:[],//matches email agaist regex
   },
   personalEmail: {
     type: String,
@@ -41,7 +43,7 @@ const UserFacultySchema = new mongoose.Schema({
         'Please fill in a valid email address',
       ],
   },
-  password: {
+  password:{
     type: String,
     minlength:[8, 'Password must be at least 8 characters'],
     required: true,
@@ -62,7 +64,7 @@ userFacultySchema.pre('save', async function (next) {
 
   this.password = await bcrypt.hash(this.password, 10);
 });
-
+/* 
 userFacultySchema.methods = {
   // method which will help us compare plain password with hashed password and returns true or false
   comparePassword: async function (plainPassword) {
@@ -72,13 +74,13 @@ userFacultySchema.methods = {
   // Will generate a JWT token with user id as payload
   generateJWTToken: async function () {
     return await jwt.sign(
-      { id: this._id, role: this.role, InstituteEmail: this.InstituteEmail },
+      { id: this._id, role: this.role, instituteEmail: this.instituteEmail },
       process.env.JWT_SECRET,
       {
         expiresIn: process.env.JWT_EXPIRY,
       }
     );
-  },
+  }, */
 
   // This will generate a token for password reset
   // generatePasswordResetToken: async function () {
@@ -96,7 +98,7 @@ userFacultySchema.methods = {
 
   //   return resetToken;
   // },
-};
 
-const Faculty= mongoose.model('User_Faculty', UserFacultySchema);
+
+const Faculty= mongoose.model('User_Faculty', userFacultySchema);
 export default Faculty ;

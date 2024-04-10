@@ -1,14 +1,20 @@
-export const registerFaculty =asyncHandler(async (req, res, next) => {
+ import catchAsync from "../utils/catchAsync.js";
+ import AppError from "../utils/appError.js";
+ import Faculty from "../models/Faculty.model.js"
+ import Form from "../models/Forms.model.js"
+ import Student from "../models/Student.model.js"
+
+ const registerFaculty = catchAsync(async (req, res, next) => {
     // Destructuring the necessary data from req object
-    const { facultyId,name, username,post,InstituteEmail,personalEmail,password,role } = req.body;
+    const { facultyId,name, username,post,instituteEmail,personalEmail,password,role } = req.body;
   
     // Check if the data is there or not, if not throw error message
-    if (!facultyId,!name, !username,!post,!InstituteEmail,!personalEmail,!password,!role) {
+    if (!facultyId,!name, !username,!post,!instituteEmail,!personalEmail,!password,!role) {
       return next(new AppError('All fields are required', 400));
     }
   
     // Check if the user exists with the provided email
-    const userExists = await Faculty.findOne({ InstituteEmail });
+    const userExists = await Faculty.findOne({ instituteEmail });
   
     // If user exists send the reponse
     if (userExists) {
@@ -21,7 +27,7 @@ export const registerFaculty =asyncHandler(async (req, res, next) => {
         name, 
         username,
         post,
-        InstituteEmail,
+        instituteEmail,
         personalEmail,
         password,
         role
@@ -34,9 +40,9 @@ export const registerFaculty =asyncHandler(async (req, res, next) => {
         new AppError('User registration failed, please try again later', 400)
       );
     }
-
+/* 
     // Save the user object
-    await Faculty.save();
+    //await user.save();
   
     // Generating a JWT token
     const token = await Faculty.generateJWTToken();
@@ -45,7 +51,7 @@ export const registerFaculty =asyncHandler(async (req, res, next) => {
     Faculty.password = undefined;
   
     // Setting the token in the cookie with name token along with cookieOptions
-    res.cookie('token', token, cookieOptions);
+    res.cookie('token', token, cookieOptions); */
   
     // If all good send the response to the frontend
     res.status(201).json({
@@ -55,18 +61,50 @@ export const registerFaculty =asyncHandler(async (req, res, next) => {
     });
   });
   
-export const loginFaculty=()=>{
+ const loginFaculty=()=>{
 
 }
-export const logoutFaculty=()=>{
+ const logoutFaculty=()=>{
 
 }
-export const getLoggedInUserDetails=()=>{
+ const getLoggedInUserDetails=()=>{
 
 }
-export const forgotPassword=()=>{
+ const forgotPassword=()=>{
 
 }
-export const changePassword=()=>{
+ const changePassword=()=>{
 
 }
+const distributeForms = catchAsync(async (req,res,next)=>{
+   const {formId,batch} = req.body;
+   const form = await Form.find({formId}).exec();
+   const link = form[0].link;
+   //console.log(form.name);
+   console.log(link);
+   if (!form) {
+    return res.status(404).json({ message: 'Form not found' });
+  }
+
+  const students = await  Student.find({batch});
+  students.forEach(students=>{
+    students.form_links.push(link);
+    students.save();
+  })
+
+  res.status(201).json({
+    status: 'form distributed successfully',
+  });
+});
+
+const addForm = catchAsync(async (req,res,next)=>{
+ // const {name,formId,link} = req.body;
+  const newForm = await Form.create(req.body);
+  res.status(201).json({
+    status: 'success',
+    data: {
+      form: newForm
+    }
+  });
+});
+export {loginFaculty,logoutFaculty,getLoggedInUserDetails,forgotPassword,changePassword,registerFaculty,distributeForms,addForm}
