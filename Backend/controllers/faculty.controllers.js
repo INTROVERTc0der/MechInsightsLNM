@@ -76,18 +76,21 @@ const forgotPassword = () => {
 const changePassword = () => {
 
 }
-const distributeForms = catchAsync(async (req, res, next) => {
-  const { formId, batch } = req.body;
-  const form = await Form.find({ formId }).exec();
-  const name = form[0].name;
-  //console.log(form.name);
-  console.log(name);
-  if (!form) {
+
+const distributeForms = catchAsync(async (req,res,next)=>{
+   const {formId,batch} = req.body;
+   const form = await Form.find({formId}).exec();
+   const name = form[0].name;
+   //console.log(form.name);
+   console.log(name);
+   if (!form) {
     return res.status(404).json({ message: 'Form not found' });
   }
 
-  const students = await Student.find({ batch });
+  const students = await  Student.find({batch});
+  
   students.forEach(students => {
+
     students.form_links.push(name);
     students.save();
   })
@@ -97,8 +100,11 @@ const distributeForms = catchAsync(async (req, res, next) => {
   });
 });
 
+
+
 const addForm = catchAsync(async (req, res, next) => {
   // const {name,formId,link} = req.body;
+
   const newForm = await Form.create(req.body);
   res.status(201).json({
     status: 'success',
