@@ -79,16 +79,16 @@
 const distributeForms = catchAsync(async (req,res,next)=>{
    const {formId,batch} = req.body;
    const form = await Form.find({formId}).exec();
-   const link = form[0].link;
+   const name = form[0].name;
    //console.log(form.name);
-   console.log(link);
+   console.log(name);
    if (!form) {
     return res.status(404).json({ message: 'Form not found' });
   }
 
   const students = await  Student.find({batch});
   students.forEach(students=>{
-    students.form_links.push(link);
+    students.form_links.push(name);
     students.save();
   })
 
@@ -98,7 +98,7 @@ const distributeForms = catchAsync(async (req,res,next)=>{
 });
 
 const addForm = catchAsync(async (req,res,next)=>{
- // const {name,formId,link} = req.body;
+ // const {name,formId,name} = req.body;
   const newForm = await Form.create(req.body);
   res.status(201).json({
     status: 'success',
