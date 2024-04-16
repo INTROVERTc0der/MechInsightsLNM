@@ -1,19 +1,37 @@
 <% layout('layouts/boilerplate')%>
 
     <div class="row">
-        <div class="col-6 offset-3">
-            <h1>Hi <%= student.username %> of <%= student.batch %>!!!
+        <div class="col-6 offset-3 mb-3">
+            <h1>Hi <%= student.name %> of <%= student.batch %>!!!
             </h1>
         </div>
         <div class="col-6 offset-3">
             <h1 class="text-center">The forms that you have to fill are:</h1>
+            <div class="row">
+                <div class="col-6">
+                    <h2>Form_Name</h2>
+                </div>
 
-            <% for(let formName of formlink) { %>
+                <div class="col-6">
+                    <h2>Form_Type</h2>
+                </div>
+            </div>
+            <% for(let form of forms) { %>
+                <div class="row">
+                    <div class="col-6 ">
+                        <p><a href="/api/v1/forms/fillForms/<%= form._id %>"
+                                class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                <%= form.f_name %>
+                            </a></p>
+                    </div>
 
-                <p><a href="/fillForms/internship/<%= student.id %>"
-                        class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
-                        <%= formName %>
-                    </a></p>
+                    <div class="col-6 ">
+                        <p>
+                            <%= form.f_type %>
+                        </p>
+                    </div>
+                </div>
+
                 <% } %>
 
         </div>
