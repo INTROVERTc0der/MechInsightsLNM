@@ -54,16 +54,20 @@ app.set('view engine', 'ejs');
 
 }) 
 */
-app.post('/Y21', (req, res) => {
-    const { inlineCheckbox1, inlineCheckbox2 } = req.body;
+// app.post('/Y21', (req, res) => {
+//     const { inlineCheckbox1, inlineCheckbox2 } = req.body;
 
-    // Now you can use the received data as needed
-    console.log("Checkbox 1:", inlineCheckbox1);
-    console.log("Checkbox 2:", inlineCheckbox2);
+//     // Now you can use the received data as needed
+//     console.log("Checkbox 1:", inlineCheckbox1);
+//     console.log("Checkbox 2:", inlineCheckbox2);
 
 
-    res.send("Responses Submitted");
+//     res.send("Responses Submitted");
 
+// })
+
+app.get('/login', (req, res) => {
+    res.render('login')
 })
 
 //default catch all route -404
