@@ -3,7 +3,7 @@ import AppError from "../utils/appError.js";
 import Faculty from "../models/Faculty.model.js"
 import Forms from "../models/Forms.model.js"
 import Student from "../models/Student.model.js"
-
+const courses = ['Physics', 'Chemistry', 'Maths'];
 const registerFaculty = catchAsync(async (req, res, next) => {
   // Destructuring the necessary data from req object
   const { facultyId, name, username, post, instituteEmail, personalEmail, password, role } = req.body;
@@ -47,6 +47,7 @@ const changePassword = () => {
 
 }
 
+
 const distributeForms = catchAsync(async (req,res,next)=>{
 //if coursefeedback form then logic
   //const userId = req.session.userId;
@@ -58,8 +59,9 @@ const distributeForms = catchAsync(async (req,res,next)=>{
   const {f_type,f_name,batch} = req.body;
   if (!f_type || !batch) {
     return res.status(404).json({ message: 'Enter proper details' });
-  }
 
+  }
+ 
   const newForm = await Forms.create({
     f_type,
     f_name,
@@ -74,6 +76,7 @@ const distributeForms = catchAsync(async (req,res,next)=>{
   students.forEach(students => {
     console.log(newForm);
     students.form_links.push(newForm);
+
     students.save();
   })
 
