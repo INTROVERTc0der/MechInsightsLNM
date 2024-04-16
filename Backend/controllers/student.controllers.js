@@ -68,20 +68,20 @@ const registerStudent = catchAsync(async (req, res, next) => {
   await studentUser.save();
 
   // Generating a JWT token
-  const token = await studentUser.generateJWTToken();
+  // onst token = await studentUser.generateJWTToken();
 
   // Setting the password to undefined so it does not get sent in the response
-  studentUser.password = undefined;
+  //studentUser.password = undefined;
 
   // Setting the token in the cookie with name token along with cookieOptions
-  res.cookie("token", token, cookieOptions);
+  //res.cookie("token", token, cookieOptions);
 
-  // If all good send the response to the frontend
+   //If all good send the response to the frontend
   res.status(201).json({
     success: true,
     message: "User registered successfully",
-    user,
-  });
+    studentUser,
+  }); 
 });
 
 const loginStudent = catchAsync(async (req, res, next) => {

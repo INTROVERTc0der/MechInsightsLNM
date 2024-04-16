@@ -11,7 +11,6 @@ router.get("/student/:id", async (req, res) => {
     const formlink = student.form_links;
     console.log(formlink);
     res.render('student', { student, formlink });
-
 })
 router.post("/logout", logoutStudent);
 router.get("/me", getLoggedInUserDetails);
