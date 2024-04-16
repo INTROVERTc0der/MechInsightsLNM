@@ -3,7 +3,7 @@ import AppError from "../utils/appError.js";
 import Faculty from "../models/Faculty.model.js"
 import Form from "../models/Forms.model.js"
 import Student from "../models/Student.model.js"
-
+const courses = ['Physics', 'Chemistry', 'Maths'];
 const registerFaculty = catchAsync(async (req, res, next) => {
   // Destructuring the necessary data from req object
   const { facultyId, name, username, post, instituteEmail, personalEmail, password, role } = req.body;
@@ -77,18 +77,22 @@ const changePassword = () => {
 
 }
 const distributeForms = catchAsync(async (req, res, next) => {
-  const { formId, batch } = req.body;
-  const form = await Form.find({ formId }).exec();
-  const name = form[0].name;
-  //console.log(form.name);
-  console.log(name);
+  const { name, batch } = req.body;
+  //console.log(formName);
+  const form = await Form.find({ name }).exec();
   if (!form) {
     return res.status(404).json({ message: 'Form not found' });
   }
+  console.log(form);
+  const fname = form[0].name;
+  //console.log(form.name);
+  console.log(fname);
+
 
   const students = await Student.find({ batch });
+  console.log(students);
   students.forEach(students => {
-    students.form_links.push(name);
+    students.form_links.push(fname);
     students.save();
   })
 
