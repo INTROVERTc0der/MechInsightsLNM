@@ -31,9 +31,6 @@ const registerFaculty = catchAsync(async (req, res, next) => {
   });
 });
 
-const loginFaculty = () => {
-
-}
 const logoutFaculty = () => {
 
 }
@@ -54,7 +51,7 @@ const distributeForms = catchAsync(async (req,res,next)=>{
     return res.status(401).json({ message: 'Unauthorized' });
   } */
   
-  const userId = "661e17966a17d45bba332aa4";
+  const userId = req.user.id;
   const {f_type,f_name,batch} = req.body;
   if (!f_type || !batch) {
     return res.status(404).json({ message: 'Enter proper details' });
@@ -64,7 +61,7 @@ const distributeForms = catchAsync(async (req,res,next)=>{
     f_type,
     f_name,
     batch,
-    faculty_id: "661e17966a17d45bba332aa4"
+    faculty_id: req.user.id
   });
    
   
@@ -95,4 +92,4 @@ const homePage = catchAsync(async (req, res) => {
   res.render('faculty', { faculty, courses })
 });
 
-export { loginFaculty, logoutFaculty, getLoggedInUserDetails, forgotPassword, changePassword, registerFaculty, distributeForms, homePage }
+export { logoutFaculty, getLoggedInUserDetails, forgotPassword, changePassword, registerFaculty, distributeForms, homePage }
