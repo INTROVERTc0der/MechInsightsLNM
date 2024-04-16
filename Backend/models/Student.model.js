@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import Forms from './Forms.model.js';
 import jwt from 'jsonwebtoken';
 //import crypto from 'crypto';
 
@@ -49,7 +50,11 @@ const userSchema = new mongoose.Schema({
   },
   form_links: [
     {
-      String
+
+      type: mongoose.Schema.ObjectId,
+      ref: 'Forms'  //reference to another model
+      //faculty_mongoId: mongoose.Schema.ObjectId,
+
     }
   ],
   branch: {
@@ -70,39 +75,11 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-userSchema.methods = {
-  // method which will help us compare plain password with hashed password and returns true or false
-  comparePassword: async function (plainPassword) {
-    return await bcrypt.compare(plainPassword, this.password);
-  },
-
-  // Will generate a JWT token with user id as payload
-  generateJWTToken: async function () {
-    return await jwt.sign(
-      { id: this._id, role: this.role, subscription: this.subscription },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: process.env.JWT_EXPIRY,
-      }
-    );
-  },
-
-  // // This will generate a token for password reset
-  // generatePasswordResetToken: async function () {
-  //   // creating a random token using node's built-in crypto module
-  //   const resetToken = crypto.randomBytes(20).toString('hex');
-
-  //   // Again using crypto module to hash the generated resetToken with sha256 algorithm and storing it in database
-  //   this.forgotPasswordToken = crypto
-  //     .createHash('sha256')
-  //     .update(resetToken)
-  //     .digest('hex');
-
-  //   // Adding forgot password expiry to 15 minutes
-  //   this.forgotPasswordExpiry = Date.now() + 15 * 60 * 1000;
-
-  //   return resetToken;
-  // },
+userSchema.methods.correctPassword = async function(
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
 };
 
 const Student = mongoose.model('User_Student', userSchema);

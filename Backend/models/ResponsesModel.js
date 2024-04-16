@@ -1,28 +1,27 @@
 import mongoose from 'mongoose';
 
-const Y22DataSchema = new mongoose.Schema({
+const responsesSchema = new mongoose.Schema({
   facultyId: {
     type: String,
     required: true,
     ref: 'User_Faculty',
   },
-  formId: {
+  form_name: { //form Id
     type: String,
     required: true,
     ref: 'Form',
   },
-  studentId: {
+  sRollNo: {
     type: String,
     required: true,
     ref: 'User_Student',
   },
-  answers: [
-    {
-      type: Number,
-      required: true,
-    },
-  ],
+  batch: {
+    type: String
+  },
+
+  answers: [Number],
 });
 
-const Y22=mongoose.model('Y22Data', Y22DataSchema);
-export default Y22;
+const responses =mongoose.model('Y20Data', responsesSchema);
+export default responses;
