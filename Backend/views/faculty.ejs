@@ -2,56 +2,82 @@
 
     <div class="row">
         <div class="col-6 offset-3">
-            <h1>Hi <%= faculty %> !!!
+            <h1 class="text-center">Hi <%= faculty.name %> !!!
             </h1>
         </div>
-        <div class="col-6 offset-3">
-            <h2>Please fill the below form to distribute feedback form</h2>
-        </div>
+        <div class="row">
+            <div class="col-6">
+                <h2>Please fill the below form to distribute feedback form</h2>
 
-        <form action="/api/v1/faculty_user/distributeForms" method="POST">
-            <div class="col-6 offset-3 mb-3">
-                <select class="form-select" aria-label="Default select example" name="batch">
-                    <option selected>Please select the batch</option>
-                    <option value="Y20">Y20</option>
-                    <option value="Y21">Y21</option>
-                    <option value="Y22">Y22</option>
-                </select>
+
+                <form action="/api/v1/faculty_user/distributeForms" method="POST">
+                    <div class="col-6 mb-3">
+                        <select class="form-select" aria-label="Default select example" name="batch">
+                            <option selected>Please select the batch</option>
+                            <option value="Y20">Y20</option>
+                            <option value="Y21">Y21</option>
+                            <option value="Y22">Y22</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <select class="form-select" aria-label="Default select example" name="f_type">
+                            <option selected>Please select the type of feedback form to be distributed</option>
+                            <option value="workshop">Workshop</option>
+                            <option value="industrialvisit">Industrial Visit</option>
+                            <option value="internship">Internship</option>
+                            <option value="course">Internship</option>
+                        </select>
+                    </div>
+
+
+
+                    <div class="col-6 mb-3">
+                        <div class="form-floating">
+
+                            <textarea class="form-control" placeholder="Please add a description of the form"
+                                id="floatingTextarea2" style="height: 100px" name="f_name"></textarea>
+                            <label for="floatingTextarea2">Form Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <button class="btn btn-success">DistributeForm</button>
+                    </div>
+                </form>
             </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-6">
+                        <h2>View Results</h2>
 
-            <div class="col-6 offset-3 mb-3">
-                <select class="form-select" aria-label="Default select example" name="name">
-                    <option selected>Please select the type of feedback form to be distributed</option>
-                    <option value="workshop">Workshop</option>
-                    <option value="industrialvisit">Industrial Visit</option>
-                    <option value="internship">Intenship</option>
-                </select>
-            </div>
+                        <% for(let form of faculty.form_issued) { %>
+                            <p>
+                                <span><a href="/api/v1/forms/viewResult/<%= form._id %>"
+                                        class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                        <%= form.f_name %>
+                                    </a>
+                                </span>
 
-            <div class="col-6 offset-3 mb-3">
-                <select class="form-select" aria-label="Default select example" name="course">
-                    <option selected>Please select the course feedback form </option>
-                    <% for(let course of courses) { %>
-                        <option value="course">
-                            <%= course %>
-                        </option>
-                        <% } %>
-                </select>
-            </div>
+                            </p>
+                            <% } %>
+                    </div>
 
-            <div class="col-6 offset-3 mb-3">
-                <div class="form-floating">
+                    <div class="col-6">
+                        <h2>Responses</h2>
 
-                    <textarea class="form-control" placeholder="Please add a description of the form"
-                        id="floatingTextarea2" style="height: 100px"></textarea>
-                    <label for="floatingTextarea2">Description</label>
+                        <% for(let form of faculty.form_issued) { %>
+                            <p>
+                                <span>
+                                    <%= form.responses.length %>
+                                </span>
+
+                            </p>
+                            <% } %>
+                    </div>
+
                 </div>
-            </div>
 
-            <div class="col-6 offset-3 mb-3">
-                <button class="btn btn-success">DistributeForm</button>
             </div>
-        </form>
-
-    </div>
+        </div>
     </div>

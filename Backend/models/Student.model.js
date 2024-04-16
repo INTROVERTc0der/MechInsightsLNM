@@ -14,14 +14,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'UserName is required'],
     unique: [true, 'UserName must be unique'],
-    trim:true,
-    minlength:[6,'UserName must be of minmum 6 characters']
+    trim: true,
+    minlength: [6, 'UserName must be of minmum 6 characters']
   },
   password: {
     type: String,
-    minlength:[8, 'Password must be at least 8 characters'],
+    minlength: [8, 'Password must be at least 8 characters'],
     required: true,
-    select:false,
+    select: false,
   },
   name: {
     type: String,
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    lowercase:true,
+    lowercase: true,
     //match:[],//matches email agaist regex
   },
   personalEmail: {
@@ -44,15 +44,17 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     match: [
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        'Please fill in a valid email address',
-      ],
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      'Please fill in a valid email address',
+    ],
   },
   form_links: [
     {
+
       type: mongoose.Schema.ObjectId,
       ref: 'Forms'  //reference to another model
       //faculty_mongoId: mongoose.Schema.ObjectId,
+
     }
   ],
   branch: {
@@ -80,5 +82,5 @@ userSchema.methods.correctPassword = async function(
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-const Student=mongoose.model('User_Student', userSchema);
+const Student = mongoose.model('User_Student', userSchema);
 export default Student;
