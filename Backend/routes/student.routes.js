@@ -4,11 +4,11 @@ import { login } from "../controllers/authController.js";
 
 const router = Router();
 import Student from "../models/Student.model.js"
-import Faculty from "../models/Faculty.model.js";
-router.post("/register", registerStudent);
-router.post("/login",login);
 
-router.get("/student/:id", async (req, res) => {
+router.post("/register", registerStudent);
+//router.post("/login",login);
+
+router.get("/:id", async (req, res) => {
     const id = req.params.id;
     const student = await Student.findById(id).populate('form_links').exec();
     console.log(student);

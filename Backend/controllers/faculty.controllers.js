@@ -3,6 +3,7 @@ import AppError from "../utils/appError.js";
 import Faculty from "../models/Faculty.model.js"
 import Forms from "../models/Forms.model.js"
 import Student from "../models/Student.model.js"
+import { promisify } from 'util';
 
 const registerFaculty = catchAsync(async (req, res, next) => {
   // Destructuring the necessary data from req object
@@ -53,7 +54,8 @@ const distributeForms = catchAsync(async (req, res, next) => {
   } */
 
   
-  const userId = req.user.id;
+  const userId = req.params.id
+  console.log(userId);
   const {f_type,f_name,batch} = req.body;
   if (!f_type || !batch) {
     return res.status(404).json({ message: 'Enter proper details' });
@@ -64,10 +66,8 @@ const distributeForms = catchAsync(async (req, res, next) => {
     f_type,
     f_name,
     batch,
-    faculty_id: req.user.id
+    faculty_id: userId
   });
-
-
 
   const students = await Student.find({ batch });
 
