@@ -27,13 +27,13 @@ const signToken = id => {
     // Remove password from output
     user.password = undefined;
   
-    res.status(statusCode).json({
+    /* res.status(statusCode).json({
       status: 'success',
       token,
       data: {
         user
       }
-    });
+    }); */
   };
 
 const login = catchAsync(async (req, res, next) => {
@@ -52,16 +52,18 @@ const login = catchAsync(async (req, res, next) => {
     
     // 3) If everything ok, send token to client
     createSendToken(user, 200, res);
-
-   /*  if (user instanceof Faculty) {
-        if (user.role === 'admin') {
+  
+    if (user instanceof Faculty) {
+        /* if (user.role === 'admin') {
           res.redirect('/admin-page'); // render the admin page for users with role 'admin'
         } else if (user.role === 'student') {
           res.redirect('/student-page'); // render the student page for users with role 'student'
-        }
+        } */
+        res.redirect(`/api/v1/faculty_user/${user._id}`)
       } else if (user instanceof Student) {
-        res.redirect('/user2-page');
-      } */
+        res.redirect(`/api/v1/student_user/${user._id}`)
+      }
+      
   });
 
   const protect = catchAsync(async (req, res, next) => {
@@ -110,4 +112,12 @@ const login = catchAsync(async (req, res, next) => {
     next();
   });
 
-  export {login,protect};
+  const logout = (req, res) => {
+    res.cookie('jwt', 'loggedout', {
+      expires: new Date(Date.now() + 10 * 1000),
+      httpOnly: true
+    });
+   // res.status(200).json({ status: 'success' });
+   res.redirect('/login');
+  };
+  export {login,protect,logout};

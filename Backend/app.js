@@ -4,7 +4,7 @@ import path from 'path'; // Import path as ES module
 import ejsMate from 'ejs-mate'; // Import ejsMate as ES module
 //import { Cors } from "cors";
 import Student from "./models/Student.model.js"
-
+import { logout } from "./controllers/authController.js";
 import cookieParser from "cookie-parser";
 config();
 const app = express();
@@ -65,10 +65,10 @@ app.set('view engine', 'ejs');
 //     res.send("Responses Submitted");
 
 // })
-
-app.get('/login', (req, res) => {
-    res.render('login')
+app.get('/login',(req,res)=>{
+    res.render('login');
 })
+app.get('/logout',logout);
 
 //default catch all route -404
 app.use('*', (req, res) => {
