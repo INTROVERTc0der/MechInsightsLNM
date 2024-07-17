@@ -26,16 +26,16 @@ const signToken = id => {
   
     // Remove password from output
     user.password = undefined;
-  
-    /* res.status(statusCode).json({
+    res.status(200).json({
       status: 'success',
       token,
       data: {
         user
       }
-    }); */
+    });
   };
 
+ //LOGIN
 const login = catchAsync(async (req, res, next) => {
     const { instituteEmail, password } = req.body;
     if(!instituteEmail || !password) return next(new AppError('Please enter all details',400))
@@ -52,72 +52,62 @@ const login = catchAsync(async (req, res, next) => {
     
     // 3) If everything ok, send token to client
     createSendToken(user, 200, res);
-  
-    if (user instanceof Faculty) {
-        /* if (user.role === 'admin') {
-          res.redirect('/admin-page'); // render the admin page for users with role 'admin'
-        } else if (user.role === 'student') {
-          res.redirect('/student-page'); // render the student page for users with role 'student'
-        } */
-        res.redirect(`/api/v1/faculty_user/${user._id}`)
-      } else if (user instanceof Student) {
-        res.redirect(`/api/v1/student_user/${user._id}`)
-      }
-      
+    //res.status(200).json({status: 'log in success'})
   });
 
-  const protect = catchAsync(async (req, res, next) => {
-    // 1) Getting token and check of it's there
-    let token;
-    if (  //tokens are contained in authorization named headers
-      req.headers.authorization &&
-      req.headers.authorization.startsWith('Bearer')
-    )
-     {
-      token = req.headers.authorization.split(' ')[1];
-    }
-  
-    if (!token) {
-      return next(
-        new AppError('You are not logged in! Please log in to get access.', 401)
-      );
-    }
-  
-    // 2) Verification token
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);//promisify(in util library ) to use async await
-  
-    // 3) Check if user still exists
-    const student = await Student.findById(decoded.id);
-    const faculty = await Faculty.findById(decoded.id);
-
-    const currentUser = student || faculty;
-    if (!currentUser) {
-      return next(
-        new AppError(
-          'The user belonging to this token does no longer exist.',
-          401
-        )
-      );
-    }
-  
-    // 4) Check if user changed password after the token was issued
-    /* if (currentUser.changedPasswordAfter(decoded.iat)) {
-      return next(
-        new AppError('User recently changed password! Please log in again.', 401)
-      );
-    }
-    */
-    // GRANT ACCESS TO PROTECTED ROUTE
-    req.user = currentUser; //store the user in req.user to use further in other functions
-    next();
-  });
-
+  //LOGOUT 
   const logout = (req, res) => {
     res.cookie('jwt', 'loggedout', {
       expires: new Date(Date.now() + 10 * 1000),
       httpOnly: true
     });
-   // res.status(200).json({ status: 'success' });
-   res.redirect('/login');
+    res.status(200).json({ status: 'log out success' });
+   
   };
-  export {login,protect,logout};
+
+   const changePassword = catchAsync(async (req, res, next) => {
+    // Destructuring the necessary data from the req object
+    const { oldPassword, newPassword } = req.body;
+    const { id } = req.user; // because of the middleware isLoggedIn
+  
+    // Check if the values are there or not
+    if (!oldPassword || !newPassword) {
+      return next(
+        new AppError('Old password and new password are required', 400)
+      );
+    }
+  
+    // Finding the user by ID and selecting the password
+    const student = await Student.findById(id).select('+password');
+    const faculty = await Faculty.findById(id).select('+password');
+    const user = student || faculty;
+    // If no user then throw an error message
+    if (!user) {
+      return next(new AppError('Invalid user id or user does not exist', 400));
+    }
+  
+    // Check if the old password is correct
+    const isPasswordValid = await user.correctPassword(oldPassword,user.password);
+  
+    // If the old password is not valid then throw an error message
+    if (!isPasswordValid) {
+      return next(new AppError('Invalid old password', 400));
+    }
+  
+    // Setting the new password
+    user.password = newPassword;
+  
+    // Save the data in DB
+    await user.save();
+  
+    // Setting the password undefined so that it won't get sent in the response
+    user.password = undefined;
+  
+    res.status(200).json({
+      success: true,
+      message: 'Password changed successfully',
+    });
+  });
+
+  
+  export {login,logout,changePassword};

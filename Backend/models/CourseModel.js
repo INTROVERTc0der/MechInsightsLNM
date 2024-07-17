@@ -5,11 +5,16 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Course Name is required']
     },
-    stRollNo: [String],
+    rollNo: [String],
     batch: {
         type: String
     },
     semester:{
         type: Number
     }
-})
+});
+
+
+const Course=mongoose.model('Course', courseSchema);
+
+export default Course;

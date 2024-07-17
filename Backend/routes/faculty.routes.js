@@ -1,17 +1,26 @@
 import { Router } from "express";
+import multer from "multer";
+import {enrollStudents,distributeForms,homePage, createForm, seeResults, profile} from '../controllers/faculty.controllers.js'
+import { login,logout,changePassword} from "../controllers/authController.js";
+import { authMiddleware } from "../middlewares/auth.js";
 
-import {logoutFaculty,getLoggedInUserDetails,forgotPassword,changePassword,registerFaculty,distributeForms,homePage} from '../controllers/faculty.controllers.js'
-import { login,protect,logout} from "../controllers/authController.js";
 const router=Router();
 
-router.get("/me", getLoggedInUserDetails);
-router.post("/reset", forgotPassword);
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
+router.post('/enrollStudents', upload.single('file'),authMiddleware,enrollStudents)
 
-router.post("/register",registerFaculty);
-router.post("/distributeForms/:id",distributeForms);
+router.post("/distributeForms",authMiddleware,distributeForms);
+
 //router.post("/addForm",addForm);
-router.post("/login",login)
-router.get("/:id",homePage)
 
-export default router;
+router.post("/login",login)
+router.get('/logout',logout)
+router.post('/changepassword',authMiddleware,changePassword)
+router.post('/createForm',createForm)
+
+router.post('/seeResults',authMiddleware,seeResults)
+router.get('/profile/:id',profile);
+
+export default router;  

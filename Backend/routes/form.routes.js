@@ -1,7 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import path from 'path'; // Import path as ES module
-import ejsMate from 'ejs-mate'; // Import ejsMate as ES module
+
 import { distributeForms } from '../controllers/faculty.controllers.js'
 import { fillForm, getResponse, viewResult } from '../controllers/forms.controllers.js'
 import Student from "../models/Student.model.js"

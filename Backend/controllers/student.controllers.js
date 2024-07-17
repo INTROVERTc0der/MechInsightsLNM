@@ -1,107 +1,74 @@
 import catchAsync from "../utils/catchAsync.js";
 import AppError from "../utils/appError.js";
-import User from '../models/Student.model.js'
-const cookieOptions = {
-  secure: process.env.NODE_ENV === "production" ? true : false,
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  httpOnly: true,
-};
+import Responses from "../models/ResponsesModel.js";
+import Forms from "../models/Forms.model.js";
+import Student from "../models/Student.model.js";
 
-const registerStudent = catchAsync(async (req, res, next) => {
-  // Destructuring the necessary data from req object
-  const {
-    rollNo,
-    username,
-    password,
-    name,
-    batch,
-    instituteEmail,
-    personalEmail,
-    branch,
-    graduationYear,
-  } = req.body;
+const formList = catchAsync(async (req, res, next) => {
+    const { id } = req.user; //student which is logged in
+    const student = await Student.findById(id).populate('form_links');
 
-  // Check if the data is there or not, if not throw error message
-  if (
-    (!rollNo,
-    !username,
-    !password,
-    !name,
-    !batch,
-    !instituteEmail,
-    !personalEmail,
-    !branch,
-    !graduationYear)
-  ) {
-    return next(new AppError("All fields are required", 400));
-  }
+    const forms = student.form_links.map(form => ({
+        f_type: form.f_type,
+        description: form.description,
+    }));
 
-  // Check if the user exists with the provided email
-  const userExists = await User.findOne({ instituteEmail });
+    res.status(200).json({
+        status: 'success',
+        data: {
+            forms,
+        },
+    });
 
-  // If user exists send the reponse
-  if (userExists) {
-    return next(new AppError("Email already exists", 409));
-  }
+})
 
-  // Create new user with the given necessary data and save to DB
-  const studentUser = await User.create({
-    rollNo,
-    username,
-    password,
-    name,
-    batch,
-    instituteEmail,
-    personalEmail,
-    branch,
-    graduationYear,
-  });
+//on click of that form questions will come into response and than can be shown on frontend
+const getQuestionsbyFormType = catchAsync(async (req, res, next) => {
+    const {responseId} = req.params;
+    const response = await Responses.findById(responseId);
+    const f_type = response.f_type;
 
-  // If user not created send message response
-  if (!studentUser) {
-    return next(
-      new AppError("User registration failed, please try again later", 400)
-    );
-  }
+    const form = await Forms.findOne({ f_type });
+    console.log(f_type);
+    if (!form) {
+        return next(new AppError('Form type not found', 404));
+    }
 
-  // Save the user object
-  await studentUser.save();
-
-   //If all good send the response to the frontend
-  res.status(201).json({
-    success: true,
-    message: "User registered successfully",
-    studentUser,
-  }); 
+    res.status(200).json({
+        status: 'success',
+        data: {
+            questions: form.questions,
+        },
+    });
 });
 
-const logoutStudent = catchAsync(async (_req, res, _next) => {
-  // Setting the cookie value to null
-  res.cookie("token", null, {
-    secure: process.env.NODE_ENV === "production" ? true : false,
-    maxAge: 0,
-    httpOnly: true,
-  });
+const submitResponses = catchAsync(async(req,res,next)=>{
+    const {responseId}=req.params; //jis response model m answers array bhejna h
+    const {id}=req.user; //student logged in id
+    const student = await Student.findById(id);
 
-  // Sending the response
-  res.status(200).json({
-    success: true,
-    message: "User logged out successfully",
-  });
-});
+    const response = await Responses.findById(responseId);
+    if (!response) {
+        return res.status(404).json({
+          status: 'fail',
+          message: 'Form not found',
+        });
+    }
+    const { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10,a11,a12,a13,a14,a15 } = req.body;
+    const resarray = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10,a11,a12,a13,a14,a15];
 
-const getLoggedInUserDetails = catchAsync(async (req, res, _next) => {
-  // Finding the user using the id from modified req object
-  const user = await User.findById(req.user.id);
+    response.answers.push(resarray);
+    await response.save();
 
-  res.status(200).json({
-    success: true,
-    message: "User details",
-    user,
-  });
-});
+    //to delete that form_links id from student array after he had submitted form
+    student.form_links = student.form_links.filter(id => id.toString() !== responseId);
+    await student.save();
 
-const forgotPassword = () => {};
-const changePassword = () => {};
-
-export {registerStudent,getLoggedInUserDetails,logoutStudent,forgotPassword,changePassword}
+    res.status(200).json({
+        status: 'success',
+        data: {
+          response,
+        },
+      });
+})
+export { formList, getQuestionsbyFormType,submitResponses}

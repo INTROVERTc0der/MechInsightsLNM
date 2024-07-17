@@ -3,24 +3,20 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import Forms from './Forms.model.js';
 import jwt from 'jsonwebtoken';
+import Responses from './ResponsesModel.js';
 
 const userFacultySchema = new mongoose.Schema({
   facultyId: {
     type: String,
     required: true,
+    default:''
    // unique: true,
   },
   name: {
     type: String,
     required: true,
   },
-  username: {
-    type: String,
-    required: [true, 'UserName is required'],
-    //unique: [true, 'UserName must be unique'],
-    trim:true,
-    minlength:[6,'UserName must be of minmum 6 characters']
-  },
+  
   post: {
     type: String,
     enum: ["assistant professor","professor"],
@@ -29,14 +25,14 @@ const userFacultySchema = new mongoose.Schema({
   },
   instituteEmail: {
     type: String,
-    // required: true,
+    required: true,
     //unique: true,
     lowercase:true,
    // match:[],//matches email agaist regex
   },
   personalEmail: {
     type: String,
-    required: true,
+    //required: true,
     //unique: true,
     lowercase: true,
   },
@@ -56,7 +52,7 @@ const userFacultySchema = new mongoose.Schema({
   form_issued: [
     {
       type: mongoose.Schema.ObjectId,
-      ref: 'Forms'  //reference to another model
+      ref: 'Responses'  //reference to another model
       //faculty_mongoId: mongoose.Schema.ObjectId,
     }
   ],
