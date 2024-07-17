@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import Forms from './Forms.model.js';
+import Responses from './ResponsesModel.js'
 import jwt from 'jsonwebtoken';
 //import crypto from 'crypto';
 
@@ -9,13 +10,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Roll Number is required'],
     unique: true,
-  },
-  username: {
-    type: String,
-    required: [true, 'UserName is required'],
-    unique: [true, 'UserName must be unique'],
-    trim: true,
-    minlength: [6, 'UserName must be of minmum 6 characters']
   },
   password: {
     type: String,
@@ -30,6 +24,7 @@ const userSchema = new mongoose.Schema({
   batch: {
     type: String,
     required: true,
+    default:''
   },
   instituteEmail: {
     type: String,
@@ -40,8 +35,6 @@ const userSchema = new mongoose.Schema({
   },
   personalEmail: {
     type: String,
-    required: true,
-    unique: true,
     lowercase: true,
     match: [
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -52,7 +45,7 @@ const userSchema = new mongoose.Schema({
     {
 
       type: mongoose.Schema.ObjectId,
-      ref: 'Forms'  //reference to another model
+      ref: 'Responses'  //reference to another model
       //faculty_mongoId: mongoose.Schema.ObjectId,
 
     }
@@ -60,11 +53,8 @@ const userSchema = new mongoose.Schema({
   branch: {
     type: String,
     required: true,
-  },
-  graduationYear: {
-    type: Number,
-    required: true,
-  },
+    default: 'Mechanical'
+  }
 });
 
 // Hashes password before saving to the database
