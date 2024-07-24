@@ -1,15 +1,14 @@
 import { Router } from "express";
-const router=Router();
+import { login,logout,changePassword} from "../controllers/authController.js";
+import { authMiddleware } from "../middlewares/auth.js";
+const router = Router();
 
+import { formList, getQuestionsbyFormType, submitResponses } from "../controllers/student.controllers.js";
 
-
-
-router.post("/register",registerStudent);
-router.post("/login",loginStudent);
-router.post("/logout",logoutStudent);
-router.get("/me",isLoggedIn,getLoggdInUserDetails);
-router.post("/reset",forgotPassword);
-router.post("/reset/:resetToken", resetPassword);
-router.post("/change-password", isLoggedIn, changePassword);
-
+router.post('/login',login)
+router.post("/logout", logout);
+router.post('/changepassword',authMiddleware,changePassword)
+router.get('/formList',authMiddleware,formList)
+router.get('/questions/:f_type',authMiddleware,getQuestionsbyFormType)
+router.post('/submitResponses/:responseId',authMiddleware,submitResponses)
 export default router;

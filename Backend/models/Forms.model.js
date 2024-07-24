@@ -1,37 +1,14 @@
 import mongoose from 'mongoose';
 
 const FormSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
+  f_type:{
+    type: String
   },
-  name: {
-    type: String,
-    required: true,
-  },
-  // questions: [
-  //   {
-  //     id: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //     text: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //     type: {
-  //       type: String,
-  //       required: true,
-  //       enum: ['radio'],
-  //     },
-  //   },
-  //],
-  link: {
-    type: String,
-    required: true,
-  },
+  
+  questions: [String]
 });
 
-const Forms=mongoose.model('Form', FormSchema);
+
+const Forms=mongoose.model('Forms', FormSchema);
+
 export default Forms;
