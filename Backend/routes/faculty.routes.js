@@ -19,7 +19,6 @@ router.post("/login",login)
 router.get('/logout',logout)
 router.post('/changepassword',authMiddleware,changePassword)
 router.post('/createForm',createForm)
-
 router.post('/seeResults',authMiddleware,seeResults)
 router.get('/profile/:id',profile);
 
