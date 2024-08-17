@@ -4,12 +4,12 @@ import { deleteResponses, registerFaculty, registerStudents } from "../controlle
 import { authMiddleware } from "../middlewares/auth.js";
 import { adminMiddleware } from "../middlewares/admin.js";
 
-const router=Router();
+const router = Router();
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router.post('/registerStudents',upload.single('file'),authMiddleware,adminMiddleware,registerStudents)
-router.post('/register_faculty',authMiddleware,adminMiddleware,registerFaculty)
-router.post('/deleteResponses',authMiddleware,adminMiddleware,deleteResponses)
+router.post('/registerStudents', upload.single('file'), authMiddleware, adminMiddleware, registerStudents)
+router.post('/register_faculty', authMiddleware, adminMiddleware, registerFaculty)
+router.post('/deleteResponses', authMiddleware, adminMiddleware, deleteResponses)
 export default router;    
