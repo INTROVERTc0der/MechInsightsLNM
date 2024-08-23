@@ -26,6 +26,12 @@ const formList = catchAsync(async (req, res, next) => {
 
 //on click of that form questions will come into response and than can be shown on frontend
 const getQuestionsbyFormType = catchAsync(async (req, res, next) => {
+<<<<<<< HEAD
+=======
+    const { responseId } = req.params;
+    const response = await Responses.findById(responseId);
+    const f_type = response.f_type;
+>>>>>>> hemangCodesAgain
 
     // const {responseId} = req.params;
     // const response = await Responses.findById(responseId);
@@ -46,9 +52,15 @@ const getQuestionsbyFormType = catchAsync(async (req, res, next) => {
     });
 });
 
+<<<<<<< HEAD
 const submitResponses = catchAsync(async(req,res,next)=>{
     const {f_type}=req.params; //jis response model m answers array bhejna h
     const {id}=req.user; //student logged in id
+=======
+const submitResponses = catchAsync(async (req, res, next) => {
+    const { responseId } = req.params; //jis response model m answers array bhejna h
+    const { id } = req.user; //student logged in id
+>>>>>>> hemangCodesAgain
     const student = await Student.findById(id);
     if (!student) {
         return res.status(404).json({
@@ -60,10 +72,15 @@ const submitResponses = catchAsync(async(req,res,next)=>{
     const response = await Responses.findOne({f_type});
     if (!response) {
         return res.status(404).json({
-          status: 'fail',
-          message: 'Form not found',
+            status: 'fail',
+            message: 'Form not found',
         });
     }
+<<<<<<< HEAD
+=======
+    const { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15 } = req.body;
+    const resarray = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15];
+>>>>>>> hemangCodesAgain
 
     // const { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10,a11,a12,a13,a14,a15 } = req.body;
     // const resarray = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10,a11,a12,a13,a14,a15];
@@ -89,8 +106,18 @@ const submitResponses = catchAsync(async(req,res,next)=>{
     res.status(200).json({
         status: 'success',
         data: {
-          response,
+            response,
         },
-      });
+    });
 })
-export { formList, getQuestionsbyFormType,submitResponses}
+
+const profile = catchAsync(async (req, res, next) => {
+    const { id } = req.user;
+    const user = await Student.findById(id);
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ user })
+})
+
+export { formList, getQuestionsbyFormType, submitResponses, profile }

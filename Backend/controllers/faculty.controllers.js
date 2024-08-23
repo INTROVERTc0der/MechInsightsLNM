@@ -6,11 +6,11 @@ import Student from "../models/Student.model.js";
 import Course from "../models/CourseModel.js";
 import xlsx from "xlsx";
 import Responses from "../models/ResponsesModel.js";
-
+import mongoose, { Mongoose } from 'mongoose';
 const distributeForms = catchAsync(async (req, res, next) => {
   const { id } = req.user; //faculty id who is logged in 
   console.log(id);
-  const { f_type, description , batch, courseName } = req.body;
+  const { f_type, description, batch, courseName } = req.body;
   if (!f_type || !batch) {
     return res.status(404).json({ message: "Enter proper details" });
   }
@@ -29,11 +29,11 @@ const distributeForms = catchAsync(async (req, res, next) => {
 
   //pushing formId to student DB
   const rollNumbers = course.rollNo;
-  const result=  await Student.updateMany(
+  const result = await Student.updateMany(
     { rollNo: { $in: rollNumbers } },
     { $push: { form_links: newForm } }
   )
-  
+
   //pushing formId to faculty DB
   const faculty = await Faculty.findById(id);
   console.log(faculty.name);
@@ -67,9 +67,9 @@ const enrollStudents = catchAsync(async (req, res, next) => {
     // Iterate through each record in the JSON array
     for (const record of data) {
       const { course_name, batch, rollno, semester } = record;
-      if(!course_name || !batch || !rollno || !semester) res.status(401).json('Invalid column names')
+      if (!course_name || !batch || !rollno || !semester) res.status(401).json('Invalid column names')
       // Find the course in the database
-      let course = await Course.findOne({ courseName: course_name, batch: batch, semester: semester});
+      let course = await Course.findOne({ courseName: course_name, batch: batch, semester: semester });
 
       if (course) {
         // If course already exists, add the roll number if it's not already in the array
@@ -98,10 +98,10 @@ const enrollStudents = catchAsync(async (req, res, next) => {
   }
 });
 
-const createForm= catchAsync(async(req,res,next)=>{
+const createForm = catchAsync(async (req, res, next) => {
   const newForm = new Forms({
-    f_type:'Workshop',
-    questions:[
+    f_type: 'Workshop',
+    questions: [
       'How would you rate the workshop',
       'How likely are you to recommend our service to others?',
       'What can we do to improve our service?',
@@ -124,11 +124,69 @@ const createForm= catchAsync(async(req,res,next)=>{
   res.send("form creation success")
 });
 
-const seeResults = catchAsync(async(req,res,next)=>{
-   const {id} = req.user; //id of faculty currently logged in
+const seeResults = catchAsync(async (req, res, next) => {
+  const { id } = req.user; // id of faculty currently logged in
+  const faculty = await Faculty.findById(id).populate('form_issued');
+
+  if (!faculty) {
+    return next(new Error('Faculty not found'));
+  }
+  // const formIds = faculty.form_issued.map(form => mongoose.Types.ObjectId(form._id));
+  const formIds = faculty.form_issued.map(form => form._id);
+
+  // Fetch all responses for the issued forms
+  // const responses = await Responses.findById(formIds);
+  const responses = await Responses.find({ _id: { $in: formIds } });
+
+  if (responses.length === 0) {
+    return res.status(200).json({ averages: [] });
+  }
+
+  const formResponses = {};
+
+  // Organize responses by form type
+  responses.forEach(response => {
+    const formId = response._id.toString();
+    if (!formResponses[formId]) {
+      formResponses[formId] = [];
+    }
+    formResponses[formId].push(...response.answers);
+  });
+
+  const averages = {};
+
+  for (const formId in formResponses) {
+    console.log(formId);
+    const allAnswers = formResponses[formId];
+
+    console.log(allAnswers);
+    const questionCount = allAnswers[0].length;
+    console.log(questionCount);
+    const formAverages = Array(questionCount).fill(0);
+
+    allAnswers.forEach(answers => {
+      answers.forEach((answer, index) => {
+        formAverages[index] += answer;
+      });
+    });
+    console.log(formAverages);
+    formAverages.forEach((total, index) => {
+      formAverages[index] = total / allAnswers.length;
+    });
+
+    averages[formId] = formAverages;
+    res.status(200).json({ averages })
+  }
+
+
 })
 
-const profile = catchAsync(async(req,res,next)=>{
-
+const profile = catchAsync(async (req, res, next) => {
+  const { id } = req.user;
+  const user = await Faculty.findById(id);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  res.status(200).json({ user })
 })
-export {  distributeForms, homePage, enrollStudents,createForm ,seeResults,profile};
+export { distributeForms, homePage, enrollStudents, createForm, seeResults, profile };
