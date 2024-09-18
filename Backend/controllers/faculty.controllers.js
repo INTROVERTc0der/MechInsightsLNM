@@ -20,8 +20,10 @@ const distributeForms = catchAsync(async (req, res, next) => {
     f_type,
     description,
     batch,
+    courseName
   });
   console.log(newForm._id)
+  console.log(courseName)
   const course = await Course.findOne({ courseName, batch });
   if (!course) {
     return next(new AppError('Course not found', 404));
@@ -189,4 +191,69 @@ const profile = catchAsync(async (req, res, next) => {
   }
   res.status(200).json({ user })
 })
-export { distributeForms, homePage, enrollStudents, createForm, seeResults, profile };
+
+
+const getFormStatistics = catchAsync(async (req, res, next) => {
+  const { id } = req.user; // Faculty ID coming from the request params
+  // console.log(facultyId)
+  // Find the faculty by ID
+  const faculty = await Faculty.findById(id).populate('form_issued'); // Populating form_issued references to Responses
+
+  if (!faculty) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Faculty not found',
+    });
+  }
+
+  const result = await Promise.all(faculty.form_issued.map(async (responseId) => {
+    // Find the response document
+    const response = await Responses.findById(responseId);
+
+    if (!response) {
+      return null; // Skip if response not found
+    }
+
+    // Get the course corresponding to the form's batch
+    const course = await Course.findOne({ batch: response.batch });
+
+    // Calculate the total number of forms distributed
+    const totalFormsDistributed = course ? course.rollNo.length : 0;
+
+    // Calculate the number of forms filled
+    const totalFormsFilled = response.submittedBy.length;
+
+    // Calculate the average for each question (15 questions) over all responses
+    const totalResponses = response.answers.length;
+    const averages = Array(15).fill(0);
+
+    response.answers.forEach(answerArray => {
+      answerArray.forEach((answer, index) => {
+        averages[index] += answer;
+      });
+    });
+
+    // Compute the final averages as percentages
+    const average_array = averages.map(sum => (totalResponses > 0 ? (sum / totalResponses) : 0));
+
+    return {
+      "Name": response.f_type, // Assuming f_type is the name of the form
+      "Batch": response.batch,
+      "Year": course ? course.semester : null, // Assuming year corresponds to semester
+      "Total Forms distributed": totalFormsDistributed,
+      "Total Forms Filled": totalFormsFilled,
+      "average_array%": average_array.map(avg => Math.round(avg)) // Round to integers
+    };
+  }));
+
+  // Filter out any null values (in case any responses were not found)
+  const filteredResult = result.filter(form => form !== null);
+
+  res.status(200).json({
+    status: 'success',
+    data: filteredResult,
+  });
+});
+
+
+export { distributeForms, homePage, enrollStudents, createForm, seeResults, profile, getFormStatistics };

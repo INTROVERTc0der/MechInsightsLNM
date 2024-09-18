@@ -48,6 +48,7 @@ const submitResponses = catchAsync(async (req, res, next) => {
     const student = await Student.findById(id);
 
     const response = await Responses.findById(responseId);
+    //we should allow a student to submit responses only  if the response id is present in the database
     if (!response) {
         return res.status(404).json({
             status: 'fail',
@@ -63,7 +64,9 @@ const submitResponses = catchAsync(async (req, res, next) => {
     //to delete that form_links id from student array after he had submitted form
     student.form_links = student.form_links.filter(id => id.toString() !== responseId);
     await student.save();
-
+    const rollNo = student.rollNo;
+    response.submittedBy.push(rollNo);
+    await response.save();
     res.status(200).json({
         status: 'success',
         data: {

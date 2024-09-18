@@ -26,7 +26,7 @@ const registerStudents = catchAsync(async (req, res, next) => {
                 continue; // Skip existing users
             }
 
-          
+
             const user = new Student({
                 name,
                 rollNo: rollno,
@@ -36,7 +36,7 @@ const registerStudents = catchAsync(async (req, res, next) => {
             });
 
             // Save the user to the database
-           await user.save();
+            await user.save();
         }
 
         // Send success response
@@ -47,18 +47,18 @@ const registerStudents = catchAsync(async (req, res, next) => {
     }
 });
 
-const registerFaculty = catchAsync(async(req,res,next)=>{
-    const {facultyId,name,instituteEmail,post}  = req.body;
-    if(!name || !instituteEmail || !facultyId || !post) return next(new AppError("All fields are required", 400));
+const registerFaculty = catchAsync(async (req, res, next) => {
+    const { facultyId, name, instituteEmail, post } = req.body;
+    if (!name || !instituteEmail || !facultyId || !post) return next(new AppError("All fields are required", 400));
 
     const userExist = await Faculty.find({ instituteEmail });
-    
+
     if (userExist.length > 0) {
-      return next(new AppError("user already exists", 400));
+        return next(new AppError("user already exists", 400));
     }
-    const password=instituteEmail;
-    
-    const newUser= new Faculty({
+    const password = instituteEmail;
+
+    const newUser = new Faculty({
         name,
         instituteEmail,
         password,
@@ -70,23 +70,64 @@ const registerFaculty = catchAsync(async(req,res,next)=>{
     res.status(201).json({
         message: "User registered successfully",
         data: {
-          data: newUser,
+            data: newUser,
         },
-      });
+    });
 })
 
-const deleteResponses = catchAsync(async(req,res,next)=>{
+const deleteResponses = catchAsync(async (req, res, next) => {
 
-    const {batch}=req.body;
-    const result = await responses.deleteMany({batch});
+    const { batch } = req.body;
+    const result = await responses.deleteMany({ batch });
     if (result.deletedCount === 0) {
         return next(new AppError('No responses found for this batch', 404));
-      }
-    
-      res.status(204).json({
+    }
+
+    res.status(204).json({
         status: 'success',
         data: null
-      });
+    });
 })
-export { registerStudents,registerFaculty ,deleteResponses};
+
+
+
+const poCalculation = catchAsync(async (req, res, next) => {
+    const { batch } = req.body;
+
+    try {
+        // Fetch all responses for the given batch
+        const allresponses = await responses.find({ batch });
+
+        // Initialize an array to hold the sums for each PSO outcome
+        const sums = new Array(15).fill(0);
+
+        // Initialize a variable to hold the total number of students
+        let totalStudents = 0;
+
+        // Calculate the sums for each question and count total students
+        allresponses.forEach(response => {
+            const numberOfStudents = response.answers.length;
+            totalStudents += numberOfStudents;
+
+            response.answers.forEach((answerSet) => {
+                answerSet.forEach((answer, index) => {
+                    sums[index] += answer;
+                });
+            });
+        });
+
+        // Calculate the average for each PSO outcome
+        const psoOutcomes = sums.map(sum => sum / totalStudents);
+
+        res.json({
+            batch,
+            totalStudents,
+            psoOutcomes,
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+})
+
+export { registerStudents, registerFaculty, deleteResponses, poCalculation };
 

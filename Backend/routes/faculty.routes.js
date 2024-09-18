@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import { enrollStudents, distributeForms, homePage, createForm, seeResults, profile } from '../controllers/faculty.controllers.js'
+import { enrollStudents, distributeForms, homePage, createForm, seeResults, profile, getFormStatistics } from '../controllers/faculty.controllers.js'
 import { login, logout, changePassword, forgetPassword, resetPassword } from "../controllers/authController.js";
 import { authMiddleware } from "../middlewares/auth.js";
 
@@ -23,6 +23,7 @@ router.post('/resetPassword', resetPassword)
 router.post('/createForm', createForm)
 
 router.get('/seeResults', authMiddleware, seeResults)
+router.get('/getFormResults', authMiddleware, getFormStatistics)
 router.get('/profile/:id', profile);
 
 export default router;  
