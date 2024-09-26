@@ -70,25 +70,25 @@ Below are the images showcasing different functionalities of the platform:
 
 - **Home Page**
 
-  ![Home Page](https://drive.google.com/file/d/11UZOD5-6NnBT4Hu75l-iCt4RixVV8aQr/view?usp=sharing)
+  ![Home Page](https://drive.google.com/uc?export=view&id=11UZOD5-6NnBT4Hu75l-iCt4RixVV8aQr)
 
 - **Login Page**
 
-  ![Login Page](https://drive.google.com/file/d/10QQEU3HcnwOBe0TK5YCaxw8wDjLQDNnY/view?usp=sharing)
+  ![Login Page](https://drive.google.com/uc?export=view&id=10QQEU3HcnwOBe0TK5YCaxw8wDjLQDNnY)
 
 ### Student Dashboard
 
 - **Form List Page**
 
-  ![Form List Page](https://drive.google.com/file/d/1ceDDTuVTew_bWkaXpRnQZ4KbVbh-_t9z/view?usp=sharing)
+  ![Form List Page](https://drive.google.com/uc?export=view&id=1ceDDTuVTew_bWkaXpRnQZ4KbVbh-_t9z)
 
 - **Fill Form Page**
 
-  ![Fill Form Page](https://drive.google.com/file/d/1tEfiLka73qBfA1BcjssTEvCaWG-_rFiU/view?usp=sharing)
+  ![Fill Form Page](https://drive.google.com/uc?export=view&id=1tEfiLka73qBfA1BcjssTEvCaWG-_rFiU)
 
 - **Profile Page**
 
-  ![Profile Page](https://drive.google.com/file/d/1dFZ0bBEKfX1hPByqD86XKmtPvyYa6C1I/view?usp=sharing)
+  ![Profile Page](https://drive.google.com/uc?export=view&id=1dFZ0bBEKfX1hPByqD86XKmtPvyYa6C1I)
 
 - **Change Password Page**
 
@@ -98,13 +98,13 @@ Below are the images showcasing different functionalities of the platform:
 
 - **Forgot Password Page**
 
-  ![Forgot Password Page](https://drive.google.com/file/d/1sqvY8nrAbHE2wghZfRnf7EL33cUNlKEz/view?usp=sharing)
+  ![Forgot Password Page](https://drive.google.com/uc?export=view&id=1sqvY8nrAbHE2wghZfRnf7EL33cUNlKEz)
 
 ### Faculty Dashboard
 
 - **Enroll Students to Course Page**
 
-  ![Enroll Students to Course Page](https://drive.google.com/file/d/1iBs2AsqWo7S2F1r3YcvSMkZi7TV96L8H/view?usp=sharing)
+  ![Enroll Students to Course Page](https://drive.google.com/uc?export=view&id=1iBs2AsqWo7S2F1r3YcvSMkZi7TV96L8H)
 
 - **Distribute Forms Page**
 
@@ -112,13 +112,13 @@ Below are the images showcasing different functionalities of the platform:
 
 - **Form Stats Page**
 
-  ![Form Stats Page](https://drive.google.com/file/d/1X7EwR5gj_6qBiLpe6D_vHZBF6_gDAuj5/view?usp=sharing)
+  ![Form Stats Page](https://drive.google.com/uc?export=view&id=1X7EwR5gj_6qBiLpe6D_vHZBF6_gDAuj5)
 
 ### HOD Dashboard
 
 - **Register New Faculty Page**
 
-  ![Register New Faculty Page](https://drive.google.com/file/d/1RSS2uNur0vg2YSzK-Yq5hlI_uHMyiz7D/view?usp=sharing)
+  ![Register New Faculty Page](https://drive.google.com/uc?export=view&id=1RSS2uNur0vg2YSzK-Yq5hlI_uHMyiz7D)
 
 - **Delete Data Page**
 
@@ -127,7 +127,7 @@ Below are the images showcasing different functionalities of the platform:
 
 - **Calculate PO/PSO Attainment Page**
 
-  ![Calculate PO/PSO Attainment Page](https://drive.google.com/file/d/1H-KFLlmfXo7KjBkZGpcZ8aqWN_5MyF4w/view?usp=sharing)
+  ![Calculate PO/PSO Attainment Page](https://drive.google.com/uc?export=view&id=1H-KFLlmfXo7KjBkZGpcZ8aqWN_5MyF4w)
 
 
 
