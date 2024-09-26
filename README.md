@@ -39,3 +39,98 @@ The application simplifies the calculation process by allowing HODs to calculate
 
    ```bash
    git clone https://github.com/yourusername/mechinsights-lnm.git
+
+## Usage
+
+### For Students:
+
+1. Log in to your account.
+2. Fill in the forms assigned by faculty.
+3. View your profile and change your password if needed.
+
+### For Faculty:
+
+1. Log in to the faculty portal.
+2. Register students for courses.
+3. Distribute forms to students for feedback.
+4. View and track the feedback submission statistics.
+5. Access results and see average PO attainment percentages.
+
+### For HOD:
+
+1. Log in to the HOD portal.
+2. Register new faculty and students.
+3. Distribute and manage forms.
+4. Calculate the overall PO and PSO attainments.
+5. Manage feedback data and remove unwanted records.
+
+## Screenshots
+
+Below are the images showcasing different functionalities of the platform:
+
+- **Home Page**
+
+  ![Home Page](./images/homepage.png)
+
+- **Login Page**
+
+  ![Login Page](./images/loginpage.png)
+
+### Student Dashboard
+
+- **Form List Page**
+
+  ![Form List Page](./images/formlistpage.png)
+
+- **Fill Form Page**
+
+  ![Fill Form Page](./images/fillformpage.png)
+
+- **Profile Page**
+
+  ![Profile Page](./images/profilepage.png)
+
+- **Change Password Page**
+
+  ![Change Password Page](./images/changepasswordpage.png)
+
+- **Forgot Password Page**
+
+  ![Forgot Password Page](./images/forgotpasswordpage.png)
+
+### Faculty Dashboard
+
+- **Enroll Students to Course Page**
+
+  ![Enroll Students to Course Page](./images/enrollstudentpage.png)
+
+- **Distribute Forms Page**
+
+  ![Distribute Forms Page](./images/distributeformspage.png)
+
+- **Form Stats Page**
+
+  ![Form Stats Page](./images/formstatspage.png)
+
+### HOD Dashboard
+
+- **Register New Faculty Page**
+
+  ![Register New Faculty Page](./images/registerfaculty.png)
+
+- **Delete Data Page**
+
+  ![Delete Data Page](./images/deletedatapage.png)
+
+- **Calculate PO/PSO Attainment Page**
+
+  ![Calculate PO/PSO Attainment Page](./images/calculatepoattainment.png)
+
+## Contributing
+
+If you wish to contribute to this project, feel free to submit a pull request or open an issue on GitHub.
+
+## License
+
+This project is licensed under the MIT License.
+
