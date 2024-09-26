@@ -70,7 +70,7 @@ Below are the images showcasing different functionalities of the platform:
 
 - **Home Page**
 
-  ![Home Page](https://drive.google.com/uc?export=view&id=1WN41sikAgszyQw69Ny38QHMVZADVkrvg)
+  ![Home Page](https://drive.google.com/uc?export=view&id=11UZOD5-6NnBT4Hu75l-iCt4RixVV8aQr)
 
 - **Login Page**
 
