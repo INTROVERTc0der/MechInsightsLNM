@@ -92,8 +92,8 @@ Below are the images showcasing different functionalities of the platform:
 
 - **Change Password Page**
 
-  ![Change Password Page](https://drive.google.com/uc?export=view&id=1fJjEUxmaDCs4SOVdfwdAXJQ0d2x4JINE
-)
+![Image Description](https://drive.google.com/uc?export=view&id=1fJjEUxmaDCs4SOVdfwdAXJQ0d2x4JINE)
+
 
 - **Forgot Password Page**
 
