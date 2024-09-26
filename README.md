@@ -70,25 +70,25 @@ Below are the images showcasing different functionalities of the platform:
 
 - **Home Page**
 
-  ![Home Page](./images/homepage.png)
+  ![Home Page](https://drive.google.com/file/d/11UZOD5-6NnBT4Hu75l-iCt4RixVV8aQr/view?usp=sharing)
 
 - **Login Page**
 
-  ![Login Page](./images/loginpage.png)
+  ![Login Page](https://drive.google.com/file/d/10QQEU3HcnwOBe0TK5YCaxw8wDjLQDNnY/view?usp=sharing)
 
 ### Student Dashboard
 
 - **Form List Page**
 
-  ![Form List Page](./images/formlistpage.png)
+  ![Form List Page](https://drive.google.com/file/d/1ceDDTuVTew_bWkaXpRnQZ4KbVbh-_t9z/view?usp=sharing)
 
 - **Fill Form Page**
 
-  ![Fill Form Page](./images/fillformpage.png)
+  ![Fill Form Page](https://drive.google.com/file/d/1tEfiLka73qBfA1BcjssTEvCaWG-_rFiU/view?usp=sharing)
 
 - **Profile Page**
 
-  ![Profile Page](./images/profilepage.png)
+  ![Profile Page](https://drive.google.com/file/d/1dFZ0bBEKfX1hPByqD86XKmtPvyYa6C1I/view?usp=sharing)
 
 - **Change Password Page**
 
@@ -98,41 +98,36 @@ Below are the images showcasing different functionalities of the platform:
 
 - **Forgot Password Page**
 
-  ![Forgot Password Page](./images/forgotpasswordpage.png)
+  ![Forgot Password Page](https://drive.google.com/file/d/1sqvY8nrAbHE2wghZfRnf7EL33cUNlKEz/view?usp=sharing)
 
 ### Faculty Dashboard
 
 - **Enroll Students to Course Page**
 
-  ![Enroll Students to Course Page](./images/enrollstudentpage.png)
+  ![Enroll Students to Course Page](https://drive.google.com/file/d/1iBs2AsqWo7S2F1r3YcvSMkZi7TV96L8H/view?usp=sharing)
 
 - **Distribute Forms Page**
 
-  ![Distribute Forms Page](./images/distributeformspage.png)
+  ![Distribute Forms Page](https://drive.google.com/uc?export=view&id=1UwbdkH7ZjowgJbDx9P3m5gJAkL-EqHMU)
 
 - **Form Stats Page**
 
-  ![Form Stats Page](./images/formstatspage.png)
+  ![Form Stats Page](https://drive.google.com/file/d/1X7EwR5gj_6qBiLpe6D_vHZBF6_gDAuj5/view?usp=sharing)
 
 ### HOD Dashboard
 
 - **Register New Faculty Page**
 
-  ![Register New Faculty Page](./images/registerfaculty.png)
+  ![Register New Faculty Page](https://drive.google.com/file/d/1RSS2uNur0vg2YSzK-Yq5hlI_uHMyiz7D/view?usp=sharing)
 
 - **Delete Data Page**
 
-  ![Delete Data Page](./images/deletedatapage.png)
+  ![Delete Data Page](https://drive.google.com/uc?export=view&id=1-Hv8Q1559fhfCe11KdOCgzyuaGpyNK1p)
+
 
 - **Calculate PO/PSO Attainment Page**
 
-  ![Calculate PO/PSO Attainment Page](./images/calculatepoattainment.png)
+  ![Calculate PO/PSO Attainment Page](https://drive.google.com/file/d/1H-KFLlmfXo7KjBkZGpcZ8aqWN_5MyF4w/view?usp=sharing)
 
-## Contributing
 
-If you wish to contribute to this project, feel free to submit a pull request or open an issue on GitHub.
-
-## License
-
-This project is licensed under the MIT License.
 
