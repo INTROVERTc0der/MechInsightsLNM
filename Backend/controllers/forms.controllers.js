@@ -4,6 +4,19 @@ import Faculty from "../models/Faculty.model.js"
 import Forms from "../models/Forms.model.js"
 import Student from "../models/Student.model.js"
 
+
+const batches = catchAsync(async (req, res, next) => {
+    // Find distinct branches
+    const distinctBranches = await Student.distinct('branch');
+  
+    res.status(200).json({
+      status: 'success',
+      data: {
+        branches: distinctBranches,
+      },
+    });
+  });
+
 const fillForm = catchAsync(
     async (req, res) => {
         //cookies  
@@ -129,6 +142,6 @@ const viewResult = async (req, res) => {
 
 
 
-export { fillForm, getResponse, viewResult }
+export { fillForm, getResponse, viewResult,batches }
 
 

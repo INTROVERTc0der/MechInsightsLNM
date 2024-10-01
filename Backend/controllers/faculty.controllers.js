@@ -7,6 +7,7 @@ import Course from "../models/CourseModel.js";
 import xlsx from "xlsx";
 import Responses from "../models/ResponsesModel.js";
 
+
 const distributeForms = catchAsync(async (req, res, next) => {
   const { id } = req.user; //faculty id who is logged in 
   console.log(id);
@@ -124,11 +125,135 @@ const createForm= catchAsync(async(req,res,next)=>{
   res.send("form creation success")
 });
 
+const formNames=catchAsync(async (req, res) => {
+  try {
+    // Fetch distinct f_type values from the Forms collection
+    const formTypes = await Forms.distinct('f_type');
+
+    // Send the array of form types as a response
+    res.json(formTypes);
+  } catch (error) {
+    console.error('Error fetching form types:', error);
+    res.status(500).json({ error: 'Failed to fetch form types' });
+  }
+})
+
+
 const seeResults = catchAsync(async(req,res,next)=>{
    const {id} = req.user; //id of faculty currently logged in
+   const faculty = await Faculty.findById(id).populate('form_issued');
+
+  if (!faculty) {
+    return next(new Error('Faculty not found'));
+  }
+  // const formIds = faculty.form_issued.map(form => mongoose.Types.ObjectId(form._id));
+  const formIds = faculty.form_issued.map(form => form._id);
+
+  // Fetch all responses for the issued forms
+  // const responses = await Responses.findById(formIds);
+  const responses = await Responses.find({ _id: { $in: formIds } });
+
+  if (responses.length === 0) {
+    return res.status(200).json({ averages: [] });
+  }
+
+  const formResponses = {};
+
+  // Organize responses by form type
+  responses.forEach(response => {
+    const formId = response._id.toString();
+    if (!formResponses[formId]) {
+      formResponses[formId] = [];
+    }
+    formResponses[formId].push(...response.answers);
+  });
+
+  const averages = {};
+
+  for (const formId in formResponses) {
+    console.log(formId);
+    const allAnswers = formResponses[formId];
+
+    console.log(allAnswers);
+    const questionCount = allAnswers[0].length;
+    console.log(questionCount);
+    const formAverages = Array(questionCount).fill(0);
+
+    allAnswers.forEach(answers => {
+      answers.forEach((answer, index) => {
+        formAverages[index] += answer;
+      });
+    });
+    console.log(formAverages);
+    formAverages.forEach((total, index) => {
+      formAverages[index] = total / allAnswers.length;
+    });
+
+    averages[formId] = formAverages;
+    res.status(200).json({ averages })
+  }
+
 })
 
 const profile = catchAsync(async(req,res,next)=>{
-
+  const { id } = req.user;
+  const user = await Faculty.findById(id);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  res.status(200).json({ user })
 })
-export {  distributeForms, homePage, enrollStudents,createForm ,seeResults,profile};
+
+
+const getFormStatistics = catchAsync(async (req, res, next) => {
+  const { id } = req.user; // Faculty ID coming from the request params
+
+  // Find the faculty by ID
+  const faculty = await Faculty.findById(id).populate('form_issued');
+
+  if (!faculty) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Faculty not found',
+    });
+  }
+
+  const result = await Promise.all(faculty.form_issued.map(async (response) => {
+    if (!response) return null; // Early exit if no response
+
+    const course = await Course.findOne({ batch: response.batch });
+
+    const totalFormsDistributed = course ? course.rollNo.length : 0;
+    const totalFormsFilled = response.submittedBy.length;
+    const totalResponses = response.answers.length;
+
+    const averages = Array(15).fill(0);
+
+    response.answers.forEach(answerArray => {
+      answerArray.forEach((answer, index) => {
+        averages[index] += answer;
+      });
+    });
+
+    const average_array = averages.map(sum => (totalResponses > 0 ? (sum / totalResponses) : 0));
+
+    return {
+      "Name": response.f_type,
+      "Batch": response.batch,
+      "Semester": course ? course.semester : null,
+      "Total Forms distributed": totalFormsDistributed,
+      "Total Forms Filled": totalFormsFilled,
+      "average_array%": average_array.map(avg => Math.round(avg))
+    };
+  }));
+
+  // Filter out nulls
+  const filteredResult = result.filter(form => form !== null);
+
+  res.status(200).json({
+    status: 'success',
+    data: filteredResult,
+  });
+});
+
+export {  distributeForms, homePage, enrollStudents,createForm ,seeResults,profile,getFormStatistics,formNames};
