@@ -78,7 +78,6 @@ export const fetchformlist= createAsyncThunk('form/getformList',async()=>{
   try {
     console.log("inside a fetchformlist miscSlice ");
     const res= await axiosInstance.get(`/user_student/formList`);
-    console.log("response received : ", res.data);
     toast.promise(
       Promise.resolve(), // Just use a resolved promise here
       {
@@ -89,7 +88,8 @@ export const fetchformlist= createAsyncThunk('form/getformList',async()=>{
   );
     // getting response resolved here
       //res = await res;
-      
+
+      console.log("response received : ", JSON.stringify(res.data));
       return res.data.data.forms;
   } catch (error) {
     toast.error(error.message);

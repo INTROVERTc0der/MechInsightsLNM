@@ -229,6 +229,7 @@ const [answers, setAnswers] = useState(Array(15).fill(null));
                 />
                 Not Satisfied
               </label>
+              <input type="text" class="input input-bordered w-full max-w-xs" placeholder="  Changes you want to suggest . . . ." />
             </div>
           ))}
           <button

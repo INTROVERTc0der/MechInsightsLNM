@@ -3,31 +3,31 @@ import Layout from "../../Layout/Layout";
 import { useEffect } from "react";
 import { fetchSeeResult } from "../../Redux/HODSlice";
 
-// const seeresults = [{
-//     "Name": "Internship 1",
-//     "Batch": "Y21",
-//     "Year": 2,
-//     "Total Forms distributed": 40,
-//     "Total Forms Filled": 23,
-//     "average_array%": [56, 67, 32, 54, 67, 78, 56, 87, 98, 89, 43, 89, 90, 67, 87]
-// }, {
-//     "Name": "Internship 2",
-//     "Batch": "Y21",
-//     "Year": 2,
-//     "Total Forms distributed": 40,
-//     "Total Forms Filled": 23,
-//     "average_array%": [65, 73, 41, 59, 72, 81, 62, 91, 99, 85, 47, 85, 94, 72, 88]
-// }];
+const seeresults = [{
+    "Name": "Internship 1",
+    "Batch": "Y21",
+    "Year": 2,
+    "Total Forms distributed": 40,
+    "Total Forms Filled": 23,
+    "average_array%": [56, 67, 32, 54, 67, 78, 56, 87, 98, 89, 43, 89, 90, 67, 87]
+}, {
+    "Name": "Internship 2",
+    "Batch": "Y21",
+    "Year": 2,
+    "Total Forms distributed": 40,
+    "Total Forms Filled": 23,
+    "average_array%": [65, 73, 41, 59, 72, 81, 62, 91, 99, 85, 47, 85, 94, 72, 88]
+}];
 
 const SeeResult = () => {
     const dispatch = useDispatch();
 
-  const { seeresults } = useSelector((state) => state.HOD);
+//   const { seeresults } = useSelector((state) => state.HOD);
   
-    const faculty_id=localStorage.getItem("_id");
-    useEffect(()=>{
-        dispatch(fetchSeeResult(faculty_id));
-    },[dispatch,faculty_id])
+//     const faculty_id=localStorage.getItem("_id");
+//     useEffect(()=>{
+//         dispatch(fetchSeeResult(faculty_id));
+//     },[dispatch,faculty_id])
 
     const titles = [
         "PO 1 : ",

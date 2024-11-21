@@ -99,6 +99,9 @@ const Layout = ({ children }) => {
                 <Link to={"/admin/registor_faculty"}>Register Faculty</Link>
                 </li>
                 <li>
+                <Link to={"/admin/registor_student"}>Register Student</Link>
+                </li>
+                <li>
                 <Link to={"/admin/delete_data"}>Delete Entries</Link>
                 </li>
                 <li>
@@ -128,6 +131,9 @@ const Layout = ({ children }) => {
                 </li>
                 <li>
                 <Link to={"/faculty/results"}>Forms Stats</Link>
+                </li>
+                <li>
+                <Link to={"/faculty/create_form"}>Create New Form</Link>
                 </li>
                 <li>
                 <Link to={"/faculty/profile"}>Profile</Link>

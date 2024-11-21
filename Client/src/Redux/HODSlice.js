@@ -85,15 +85,15 @@ export const POattainments= createAsyncThunk('HOD/POattainment',async({batch,yea
 export const DeleteData= createAsyncThunk('HOD/delete_data',async(batch)=>{
   try {
     const res= await axiosInstance.post("/user_hod/deleteResponses",batch);
-    // await toast.promise(res, {
-    //   loading: "Loading...",
-    //   success: (data) => {
-    //     return data?.data?.message;
-    //   },
-    //   error: "Failed to fetch formNames",
-    // });
+    await toast.promise(res, {
+      loading: "Loading...",
+      success: (data) => {
+        return data?.data?.message;
+      },
+      error: "Failed to fetch formNames",
+    });
     // getting response resolved here
-      //res = await res;
+      res = await res;
       return res.data;
     
   } catch (error) {

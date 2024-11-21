@@ -42,9 +42,9 @@ const DistributeForms = () => {
 
     // Calling distribution action
     const res = await dispatch(distributeforms(DistributeData));
-
+    console.log("Response object:", JSON.stringify(res, null, 2));
     // Redirect to home page if distribution is successful
-    if (res?.payload?.success) {
+    if (res?.payload?.status === "Form distributed successfully") {
       navigate("/");
     }
 

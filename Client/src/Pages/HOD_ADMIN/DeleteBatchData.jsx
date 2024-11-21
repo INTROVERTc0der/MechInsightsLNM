@@ -36,7 +36,8 @@ const DeleteBatchData = () => {
     const res = await dispatch(DeleteData(batch));
 
     // redirect to home page if true
-    if (res?.payload?.success) navigate("/");
+    if (res?.payload?.success)  navigate("/success-page");
+
     //navigate("/");
 
     // clearing inputs

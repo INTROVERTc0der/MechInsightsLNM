@@ -26,6 +26,7 @@ import EnrollStudents_inCourse from "./Pages/Faculty/EnrollStudents_inCourse";
 import DistributeForms from "./Pages/Faculty/DistributeForms";
 import SUCCESS from "./Components/Success";
 import FormResult from "./Pages/HOD_ADMIN/FormResult";
+import CreateForm from "./Pages/Faculty/CreateForm";
 function App() {
  
 
@@ -60,6 +61,7 @@ function App() {
       
       <Route element={<RequireAuth allowedRoles={["Faculty"]}/>}>
       <Route path="/faculty/distribute_forms" element={<DistributeForms/>}/>
+      <Route path="/faculty/create_form" element={<CreateForm/>}/>
       </Route>
 
       <Route element={<RequireAuth allowedRoles={["Admin"]}/>}>
@@ -67,6 +69,7 @@ function App() {
         <Route path="/admin/delete_data" element={<DeleteData/>}/>
         <Route path="/admin/cal_POattainment" element={<POattainment/>}/>
         <Route path="/admin/registor_faculty" element={<RegistorFaculty/>}/>
+        <Route path="/admin/registor_student" element={<RegistorStudent/>}/>
         <Route path="/admin/all_results" element={<FormResult/>}/>
       </Route>
 

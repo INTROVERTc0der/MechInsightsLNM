@@ -23,17 +23,17 @@ export const distributeforms= createAsyncThunk('faculty/form_distribute',async(d
   try {
     console.log("inside the function call")
     const res= await axiosInstance.post("/forms/sendForms",data);
-    console.log(res.data);
-    await toast.promise(res, {
-      loading: "Loading...",
-      success: (data) => {
-        return data?.data?.message;
-      },
-      error: "Failed to distribute forms please try again",
-    });
+    console.log("res.data"+res.data);
+    // await toast.promise(res, {
+    //   loading: "Loading...",
+    //   success: (data) => {
+    //     return data?.data?.message;
+    //   },
+    //   error: "Failed to distribute forms please try again",
+    // });
     // getting response resolved here
       //res = await res;
-      return res.data;
+      return await res.data;
     
   } catch (error) {
     toast.error(error.message);
