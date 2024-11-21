@@ -9,9 +9,9 @@ console.log("heyyy")
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router.post('/registerStudents',upload.single('file'),authMiddleware,adminMiddleware,registerStudents)
+router.post('/register_student',upload.single('file'),registerStudents)
 router.post('/register_faculty',authMiddleware,adminMiddleware,registerFaculty)
-router.post('/deleteResponses',authMiddleware,adminMiddleware,deleteResponses)
+router.post('/deleteResponses',deleteResponses)
 router.get('/all_result',authMiddleware,allresult);
 router.get('/POattainments',poCalculation);
 

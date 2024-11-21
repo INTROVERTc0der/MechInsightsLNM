@@ -9,42 +9,62 @@ import Responses from "../models/ResponsesModel.js";
 
 
 const distributeForms = catchAsync(async (req, res, next) => {
-  const { id } = req.user; //faculty id who is logged in 
-  console.log(id);
-  const { f_type, description , batch, courseName } = req.body;
-  if (!f_type || !batch) {
-    return res.status(404).json({ message: "Enter proper details" });
+  try {
+    console.log("Controller: distributeForms called.");
+    console.log(req.body);
+    console.log(req.user);
+    const { id } = req.user; // Logged-in faculty ID
+    console.log("Logged-in Faculty ID:", id);
+
+    const { form_name, description, batch, course } = req.body;
+    const f_type=form_name;
+    const courseName=course;
+    if (!f_type || !batch) {
+      console.log("Validation failed: Missing f_type or batch");
+      return res.status(404).json({ message: "Enter proper details" });
+    }
+
+    const newForm = await Responses.create({
+      f_type,
+      description,
+      batch,
+    });
+    console.log("New form created:", newForm);
+
+    const Courses = await Course.findOne({ courseName, batch });
+    if (!Courses) {
+      console.log("Course not found for", courseName, batch);
+      return next(new AppError("Course not found", 404));
+    }
+    console.log("Course found:", Course);
+
+    const rollNumbers = Courses.rollNo;
+    const result = await Student.updateMany(
+      { rollNo: { $in: rollNumbers } },
+      { $push: { form_links: newForm } }
+    );
+    console.log("Form IDs pushed to students:", result);
+
+    const faculty = await Faculty.findById(id);
+    if (!faculty) {
+      console.log("Faculty not found for ID:", id);
+      return next(new AppError("Faculty not found", 404));
+    }
+    console.log("Faculty found:", faculty.name);
+
+    faculty.form_issued.push(newForm);
+    await faculty.save();
+    console.log("formed issued saved in faculty data base ")
+    res.status(200).json({
+      success: true,
+      status: "Form distributed successfully",
+    });
+  } catch (error) {
+    console.error("Error in distributeForms:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
   }
-
-  const newForm = await Responses.create({
-    //ye chiz response vale m karni h
-    f_type,
-    description,
-    batch,
-  });
-  console.log(newForm._id)
-  const course = await Course.findOne({ courseName, batch });
-  if (!course) {
-    return next(new AppError('Course not found', 404));
-  }
-
-  //pushing formId to student DB
-  const rollNumbers = course.rollNo;
-  const result=  await Student.updateMany(
-    { rollNo: { $in: rollNumbers } },
-    { $push: { form_links: newForm } }
-  )
-  
-  //pushing formId to faculty DB
-  const faculty = await Faculty.findById(id);
-  console.log(faculty.name);
-  faculty.form_issued.push(newForm);
-  faculty.save();
-
-  res.status(200).json({
-    status: "form distributed successfully",
-  });
 });
+
 
 const courses = ["Physics", "Chemistry", "Maths"];
 const homePage = catchAsync(async (req, res) => {

@@ -8,12 +8,12 @@ const formList = catchAsync(async (req, res, next) => {
     console.log("inside the formList controllers")
     const { id } = req.user; //student which is logged in
     const student = await Student.findById(id).populate('form_links');
-
+    console.log("student"+JSON.stringify(student.form_links))
     const forms = student.form_links.map(form => ({
         f_type: form.f_type,
         description: form.description,
     }));
-    console.log("forms names : >>>>> "+forms)
+    console.log("forms names : >>>>> "+JSON.stringify(forms))
 
     res.status(200).json({
         status: 'success',

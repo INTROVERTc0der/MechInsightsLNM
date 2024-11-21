@@ -49,55 +49,118 @@ const registerStudents = catchAsync(async (req, res, next) => {
         res.status(500).send('Error registering students');
     }
 });
-
 const registerFaculty = catchAsync(async (req, res, next) => {
-    try {
-      const { facultyId, name, instituteEmail, post } = req.body;
-  
-      // Validate input fields
-      if (!name || !instituteEmail || !facultyId || !post) {
-        return res.status(400).json({ message: "All fields are required" });
-      }
-  
-      // Check if the faculty already exists
-      const userExist = await Faculty.findOne({ instituteEmail });
-      if (userExist) {
-        return res.status(400).json({ message: "User already exists" });
-      }
-  
-      // Generate a default password (consider hashing it)
-      const Password = instituteEmail;
-  
-      // Hash the password before saving it
-      //const hashedPassword = await bcrypt.hash(Password, 12);
-  
-      // Create a new faculty member
-      const newUser = new Faculty({
-        name,
-        instituteEmail,
-        password: Password, // Store hashed password
-        facultyId,
-        post,
-      });
-  
-      // Save the new user to the database
-      await newUser.save();
-  
-      // Send success response to client
-      res.status(201).json({
-        message: "Faculty registered successfully",
-        data: {
-          facultyId: newUser._id,  // or any other relevant info
-          name: newUser.name,
-          instituteEmail: newUser.instituteEmail,
-          post: newUser.post,
-        },
-      });
-    } catch (error) {
-      console.error('Error registering faculty:', error);
-      res.status(500).json({ message: "Error registering faculty" });
+  try {
+    console.log("Request Body:", req.body);
+
+    const { facultyId, name, instituteEmail, post } = req.body;
+
+    // Validate input fields
+    if (!name || !instituteEmail || !facultyId || !post) {
+      console.log("Validation failed: Missing fields");
+      return res.status(400).json({ message: "All fields are required" });
     }
-  });
+
+    console.log("Step: Validation passed");
+
+    // Check if the faculty already exists
+    const userExist = await Faculty.findOne({ instituteEmail });
+    console.log("Step: Faculty existence check", userExist);
+    if (userExist) {
+      console.log("Faculty already exists");
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    console.log("Step: Faculty does not exist. Proceeding with registration.");
+
+    // Generate a default password (consider hashing it)
+    const Password = instituteEmail;
+
+    // Create a new faculty member
+    const newUser = new Faculty({
+      name,
+      instituteEmail,
+      password: Password,
+      facultyId,
+      post,
+    });
+
+    console.log("Step: Faculty object created. Saving to database...");
+    await newUser.save();
+
+    console.log("Step: Faculty saved successfully");
+
+    // Send success response to client
+    return res.status(201).json({
+      message: "Faculty registered successfully",
+      data: {
+        facultyId: newUser._id,
+        name: newUser.name,
+        instituteEmail: newUser.instituteEmail,
+        post: newUser.post,
+      },
+    });
+  } catch (error) {
+    console.error("Error registering faculty:", error);
+    return res.status(500).json({
+      message: "Error registering faculty",
+      error: error.message,
+    });
+  }
+});
+
+//const registerFaculty = catchAsync(async (req, res, next) => {
+  //   try {
+  //     const { facultyId, name, instituteEmail, post } = req.body;
+  
+  //     // Validate input fields
+  //     if (!name || !instituteEmail || !facultyId || !post) {
+  //       return res.status(400).json({ message: "All fields are required" });
+  //     }
+  //     console.log("hello1");
+
+  //     // Check if the faculty already exists
+  //     console.log("Checking if faculty exists...");
+  //     const userExist = await Faculty.findOne({ instituteEmail });
+  //     console.log("Faculty check completed:", userExist);
+  //     if (userExist) {
+  //       return res.status(400).json({ message: "User already exists" });
+  //     }
+  
+  //     // Generate a default password (consider hashing it)
+  //     const Password = instituteEmail;
+  
+  //     // Hash the password before saving it
+  //     //const hashedPassword = await bcrypt.hash(Password, 12);
+  //     console.log("hello1");
+
+  //     // Create a new faculty member
+  //     const newUser = new Faculty({
+  //       name,
+  //       instituteEmail,
+  //       password: Password, // Store hashed password
+  //       facultyId,
+  //       post,
+  //     });
+  //     console.log("hello1");
+  //     // Save the new user to the database
+  //     await newUser.save();
+  
+  //     // Send success response to client
+  //     res.status(201).json({
+  //       message: "Faculty registered successfully",
+  //       data: {
+  //         facultyId: newUser._id,  // or any other relevant info
+  //         name: newUser.name,
+  //         instituteEmail: newUser.instituteEmail,
+  //         post: newUser.post,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error('Error registering faculty:', error.message, error.stack);
+  // res.status(500).json({ message: "Error registering faculty", error: error.message });
+  //   }
+  // });
 const deleteResponses = catchAsync(async(req,res,next)=>{
     console.log("hey")
     const {batch}=req.body;
