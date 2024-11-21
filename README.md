@@ -37,22 +37,22 @@ The application simplifies the calculation process by allowing HODs to calculate
 
 1. Clone the repository:
 
-   bash
+   ```bash
    git clone https://github.com/INTROVERTc0der/mechinsights-lnm.git
 
 2. Navigate to the project directory
    
-   bash
+   ```bash
    cd mechinsights-lnm
 
 3. Install depencies:
 
-   bash
+   ```bash
    npm install
 
 4. Start the development
 
-   bash
+   ```bash
    npm run start
 
   
